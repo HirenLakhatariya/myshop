@@ -1,0 +1,155 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.product-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-images {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+}
+
+.main-image {
+    position: relative;
+}
+
+.main-image img {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+}
+
+.zoom-lens {
+    position: absolute;
+    border: 2px solid #ff7c7c;
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    display: none;
+}
+
+.zoom-result {
+    position: absolute;
+    top: 0;
+    left: 105%; /* Places the zoom result container to the right */
+    width: 300px;
+    height: 300px;
+    border: 2px solid #ddd;
+    overflow: hidden;
+    background-color: #fff;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.zoom-result img {
+    position: absolute;
+    width: 1000px; /* Larger than the original image for zooming */
+}
+
+.thumbnail-row {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.thumbnail-row img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.thumbnail-row img:hover {
+    transform: scale(1.1);
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.order-form {
+    margin-top: 30px;
+}
+
+.order-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.order-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-form input,
+.order-form textarea,
+.order-form button {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.order-form button {
+    background-color: #ff7c7c;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.order-form button:hover {
+    background-color: #e06666;
+}
+
+@media (max-width: 768px) {
+    .product-section {
+        flex-direction: column;
+    }
+
+    .zoom-result {
+        position: fixed;
+        top: 50%; /* Centered vertically */
+        left: 50%; /* Centered horizontally */
+        transform: translate(-50%, -50%);
+        width: 90%; /* Takes up most of the screen width */
+        height: auto;
+        border: none; /* Cleaner look for mobile */
+    }
+
+    .zoom-result img {
+        width: 800px;
+    }
+}
