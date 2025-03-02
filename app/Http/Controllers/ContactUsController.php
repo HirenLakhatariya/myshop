@@ -17,14 +17,14 @@ class ContactUsController extends Controller
             'contact_number' => 'required|string|max:15',
             'message' => 'required|string',
         ]);
-        $to = $request->email;
-        $subject = 'Contact Us';
-        $messageForUser = $request->message;
-        $messageForAdmin = $request->message;        
-        $contact = ContactUs::create($request->all());
+        $data = [
+            'name' => $request->input('name'),
+            'user_message' => $request->input('message'), // Change key name
+            'number' => $request->input('contact_number'),
+        ];
         try {
-            Mail::to($to)->send(new ContactUsMail($subject, $messageForUser));
-            Mail::to('hirenlakhatariya9@gmail.com')->send(new ContactUsMail($subject, $messageForAdmin));
+            ContactUs::create($request->all());
+            Mail::to('mukeshrlakhatariya1972@gmail.com')->send(new ContactUsMail($data));
             return back()->with('success', 'Message sent successfully! we will contact you soon');
         } catch (\Throwable $th) {
             dd($th->getMessage());

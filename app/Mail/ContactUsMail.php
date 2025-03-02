@@ -14,16 +14,14 @@ class ContactUsMail extends Mailable
     use Queueable, SerializesModels;
 
     public $contactData;
-    public $subject;
-    public $message;
+    public $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($subject,$message)
+    public function __construct($data)
     {
-        $this->subject = $subject;
-        $this->message = $message;
+        $this->data = $data;    
     }
 
     /**
@@ -32,17 +30,18 @@ class ContactUsMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->subject,
+            subject: 'Contact Us',
         );
     }
 
-    // /**
-    //  * Get the message content definition.
-    //  */
+    /**
+     * Get the message content definition.
+     */
     public function content(): Content
     {
         return new Content(
             view: 'emails.contact-us',
+            with: ['data' => $this->data]
         );
     }
 
