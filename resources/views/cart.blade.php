@@ -7,29 +7,44 @@
         <div class="card shadow p-4">
             <ul class="list-group mb-4">
                 @foreach ($cart as $item)
-                    <li class="list-group-item border border-primary d-flex justify-content-between align-items-center m-2">
-                        <div>
-                            <h5 class="mb-1">{{ $item['name'] }}</h5>
-                            <p class="mb-0 text-muted">₹{{ $item['price'] }} per KG x {{ $item['quantity'] / 1000 }} KG</p>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <form action="{{ route('update.cart', 'delete') }}" method="post" class="d-inline m-2">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                    <button type="submit" class="btn btn-outline-danger"><img src="{{ asset('images/delete-icon.png') }}" alt="Cart" style="width: 20px; height: 20px;"></button>
-                                </form>
-                                <form action="{{ route('update.cart', 'minus') }}" method="post" class="d-inline m-2">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                    <button type="submit" class="btn btn-outline-danger">-</button>
-                                </form>
-                                <form action="{{ route('update.cart', 'plus') }}" method="post" class="d-inline m-2">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                    <button type="submit" class="btn btn-outline-success">+</button>
-                                </form>
-                            </div>
-                    </li>
+                <li class="list-group-item border border-primary d-flex justify-content-between align-items-center m-2">
+                    <div>
+                        <h5 class="mb-1">{{ $item['name'] }}</h5>
+                        @php
+                            $quantity = $item['quantity'];
+                            if ($quantity < 1000) {
+                                $displayQty = $quantity . 'g';
+                            } else {
+                                $kg = $quantity / 1000;
+                                // If kg is a whole number, show without decimals; otherwise, show one decimal place.
+                                $displayQty = ($kg == floor($kg)) ? floor($kg) . 'kg' : number_format($kg, 1) . 'kg';
+                            }
+                        @endphp
+                        <p class="mb-0 text-muted">
+                            ₹{{ $item['price'] }} per KG x {{ $displayQty }}
+                        </p>
+                    </div>
+
+                    <div class="btn-group" role="group">
+                        <form action="{{ route('update.cart', 'delete') }}" method="post" class="d-inline m-2">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item['id'] }}">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <img src="{{ asset('images/delete-icon.png') }}" alt="Delete" style="width: 20px; height: 20px;">
+                            </button>
+                        </form>
+                        <form action="{{ route('update.cart', 'minus') }}" method="post" class="d-inline m-2">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item['id'] }}">
+                            <button type="submit" class="btn btn-outline-danger">-</button>
+                        </form>
+                        <form action="{{ route('update.cart', 'plus') }}" method="post" class="d-inline m-2">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item['id'] }}">
+                            <button type="submit" class="btn btn-outline-success">+</button>
+                        </form>
+                    </div>
+                </li>
                 @endforeach
             </ul>
 

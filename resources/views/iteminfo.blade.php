@@ -2,106 +2,174 @@
 
 @section('main-section')
 <div class="container">
-        <div class="product-section">
-            <!-- Product Images -->
-            <div class="product-images">
-                <div class="main-image" id="mainImage">
-                    <img id="currentImage" src="https://picsum.photos/500/400" alt="Zoomable Image">
-                    <div class="zoom-lens" id="zoomLens"></div>
-                </div>
-                <div class="zoom-result" id="zoomResult">
-                    <img id="zoomedImage" src="https://picsum.photos/500/400" alt="Zoomed Image">
-                </div>
-                <div class="thumbnail-row">
-                    <img src="https://picsum.photos/500/400" alt="Thumbnail 1" onclick="changeImage(this)">
-                    <img src="https://picsum.photos/500/401" alt="Thumbnail 2" onclick="changeImage(this)">
-                    <img src="https://picsum.photos/500/402" alt="Thumbnail 3" onclick="changeImage(this)">
-                    <img src="https://picsum.photos/500/403" alt="Thumbnail 4" onclick="changeImage(this)">
-                </div>
+    <div class="product-section">
+        <!-- Product Images -->
+        <div class="product-images">
+            <div class="main-image" id="mainImage">
+                <img id="currentImage" src="{{ asset($items->img) }}" alt="Zoomable Image">
+                <div class="zoom-lens" id="zoomLens"></div>
             </div>
-
-            <!-- Product Info -->
-            <div class="product-info">
-                <h1>Delicious Sweet</h1>
-                <p>
-                    Our signature sweet is made with premium ingredients to deliver the best taste and quality. Perfect for celebrations, festivals, and daily treats.
-                </p>
-                <p>
-                    Each piece is crafted with care to ensure a rich flavor and delightful texture, making it a favorite among all age groups.
-                </p>
+            <div class="zoom-result" id="zoomResult">
+                <img id="zoomedImage" src="{{ asset($items->img) }}" alt="Zoomed Image">
+            </div>
+            <div class="thumbnail-row">
+                @if($itemsImg->images)
+                    @foreach($itemsImg->images as $images)
+                        <img src="{{ asset($images->image_path) }}" alt="Thumbnail" onclick="changeImage(this)">
+                    @endforeach
+                @endif
             </div>
         </div>
 
-        <!-- Order Form -->
-        <div class="order-form">
-            <h2>Order Now</h2>
-            <form id="orderForm">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Your Name" required>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Your Email" required>
-                <label for="date">Pickup Date</label>
-                <input type="date" id="date" name="date" required>
-                <label for="time">Pickup Time</label>
-                <input type="time" id="time" name="time" required>
-                <label for="message">Additional Message</label>
-                <textarea id="message" name="message" rows="4" placeholder="Any specific instructions?"></textarea>
-                <button type="submit">Submit Order</button>
+        <!-- Product Info -->
+        <div class="product-info">
+            <h1>{{$items->name}}</h1>
+            <h5>{{$items->price}}/kg</h5>
+            <p>
+                {{$items->description}}
+            </p>
+            <form id="addToCartForm-{{ $items->id }}" class="flex-grow-1">
+                <input type="hidden" name="id" value="{{ $items->id }}">
+                <input type="hidden" name="name" value="{{ $items->name }}">
+                <input type="hidden" name="price" value="{{ $items->price }}">
+
+                <select name="quantity" id="quantity-{{ $items->id }}" class="form-select form-select-sm mb-2 w-50">
+                    <option value="200">200g</option>
+                    <option value="500">500g</option>
+                    <option value="1000" selected>1 Kg</option>
+                    <option value="5000">5 Kg</option>
+                </select>
+
+                    <button type="button" class="btn btn-danger btn-sm w-50 addToCartBtn" data-id="{{ $items->id }}"></button>
+                </div>
             </form>
         </div>
     </div>
+</div>
+<div class="category-products-section mt-5">
+    <h3 class="text-center mb-4">✨ Other Products in the Same Category ✨</h3>
+    <div class="text-end">
+        <a href="{{ $items->type == 'F' ? '/namkeens' : '/sweets' }}" class="btn btn-primary">
+            More
+        </a>
+    </div>
+    <div class="row justify-content-center" style="margin: 0;">  <!-- Remove row margin -->
+        @foreach($products as $product)
+            <div class="col-6 col-md-4 col-lg-2 px-1">  <!-- Compact padding -->
+                <div class="card-info h-100 shadow-sm product-card hover-effect">
+                    <div class="card-img-container">
+                        <img class="card-img-top" src="{{ asset($product->img) }}" alt="{{ $product->name }}">
+                    </div>
+                    <div class="card-body-info d-flex flex-column">
+                        <h5 class="card-title text-truncate">{{ $product->name }}</h5>
+                        <p class="card-text text-muted">{{ Str::limit($product->description, 30) }}</p>
+
+                        <!-- Buttons in one line -->
+                        <div class="d-flex justify-content-between align-items-center mt-2">  
+                            <form id="addToCartForm-{{ $product->id }}" class="flex-grow-1">
+                                <input type="hidden" name="id" value="{{ $product->id }}">
+                                <input type="hidden" name="name" value="{{ $product->name }}">
+                                <input type="hidden" name="price" value="{{ $product->price }}">
+
+                                <select name="quantity" id="quantity-{{ $product->id }}" class="form-select form-select-sm mb-2">
+                                    <option value="200">200g</option>
+                                    <option value="500">500g</option>
+                                    <option value="1000" selected>1 Kg</option>
+                                    <option value="5000">5 Kg</option>
+                                </select>
+
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-danger btn-sm w-100 addToCartBtn" data-id="{{ $product->id }}"></button>
+                                    <a href="/iteminfo/{{$product->id}}"><button type="button" class="btn btn-info ms-1">Info</button></a>
+                                </div>
+                            </form>
+                            <!-- <button type="button" class="btn btn-danger btn-sm w-50 addToCartBtn" data-id="{{ $product->id }}"></button> -->
+                            <!-- <a href="/iteminfo/{{$product->id}}" class="btn btn-info btn-sm w-50 ms-2">ℹ️ Info</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+</div>
 
     <script>
-       // Image switching functionality
-        function changeImage(thumbnail) {
-            const mainImage = document.getElementById("mainImage");
-            const zoomedImage = document.getElementById("zoomedImage");
-            mainImage.src = thumbnail.src;
-            zoomedImage.src = thumbnail.src;
-        }
+    // Image switching functionality
+    function changeImage(thumbnail) {
+        const currentImage = document.getElementById("currentImage");
+        const zoomedImage = document.getElementById("zoomedImage");
+        const thumbnailRow = document.querySelector(".thumbnail-row");
+        // currentImage.src = thumbnail.src;
+        // zoomedImage.src = thumbnail.src;
 
-        // Zoom functionality
-        const mainImage = document.getElementById("mainImage");
-        const zoomLens = document.getElementById("zoomLens");
-        const zoomResult = document.getElementById("zoomResult");
-        const zoomImage = zoomResult.querySelector("img");
+            // ✅ Create a new thumbnail from the current main image
+        const newThumbnail = document.createElement("img");
+        newThumbnail.src = currentImage.src;  // Set the current main image as a new thumbnail
+        newThumbnail.alt = "Thumbnail";
+        newThumbnail.onclick = function () {
+            changeImage(this);
+        };
 
-        mainImage.addEventListener("mouseenter", () => {
-            zoomLens.style.display = "block";
-            zoomResult.style.display = "block";
-        });
+        // ✅ Add the current main image to the thumbnail row
+        thumbnailRow.appendChild(newThumbnail);
 
-        mainImage.addEventListener("mouseleave", () => {
-            zoomLens.style.display = "none";
-            zoomResult.style.display = "none";
-        });
+        // ✅ Set the clicked image as the new main image
+        currentImage.src = thumbnail.src;
+        zoomedImage.src = thumbnail.src;
 
-        mainImage.addEventListener("mousemove", (e) => {
-            const rect = mainImage.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        // ✅ Remove the clicked image from thumbnails
+        thumbnail.remove();
+    }
 
-            const lensX = x - zoomLens.offsetWidth / 2;
-            const lensY = y - zoomLens.offsetHeight / 2;
+    const mainImageContainer = document.getElementById("mainImage");
+    const mainImage = document.getElementById("currentImage");
+    const zoomLens = document.getElementById("zoomLens");
+    const zoomResult = document.getElementById("zoomResult");
+    const zoomImage = document.getElementById("zoomedImage");
 
-            const lensLeft = Math.max(0, Math.min(lensX, rect.width - zoomLens.offsetWidth));
-            const lensTop = Math.max(0, Math.min(lensY, rect.height - zoomLens.offsetHeight));
+    // Show zoom lens and zoom result when hovering over image
+    mainImageContainer.addEventListener("mouseenter", () => {
+        zoomLens.style.display = "block";
+        zoomResult.style.display = "block";
+    });
 
-            zoomLens.style.left = lensLeft + "px";
-            zoomLens.style.top = lensTop + "px";
+    // Hide zoom lens when mouse leaves
+    mainImageContainer.addEventListener("mouseleave", () => {
+        zoomLens.style.display = "none";
+        zoomResult.style.display = "none";
+    });
 
-            const zoomX = -lensLeft * (zoomImage.width / rect.width);
-            const zoomY = -lensTop * (zoomImage.height / rect.height);
+    mainImageContainer.addEventListener("mousemove", (e) => {
+        const rect = mainImageContainer.getBoundingClientRect();
+        const lensSize = 100; // Lens size (adjustable)
+        
+        // Get mouse position inside the image
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
 
-            zoomImage.style.left = zoomX + "px";
-            zoomImage.style.top = zoomY + "px";
-        });
+        // Keep lens inside image boundaries
+        let lensLeft = Math.max(0, Math.min(x - lensSize / 2, rect.width - lensSize));
+        let lensTop = Math.max(0, Math.min(y - lensSize / 2, rect.height - lensSize));
 
-        // Order form submission
-        document.getElementById("orderForm").addEventListener("submit", function (e) {
+        zoomLens.style.left = `${lensLeft}px`;
+        zoomLens.style.top = `${lensTop}px`;
+
+        // Get scale ratio for zoom
+        const scaleX = zoomImage.width / mainImage.width;
+        const scaleY = zoomImage.height / mainImage.height;
+
+        // Move zoomed image accordingly
+        zoomImage.style.transform = `translate(${-lensLeft * scaleX}px, ${-lensTop * scaleY}px)`;
+    });
+
+    const orderForm = document.getElementById("orderForm");
+
+    if (orderForm) {  // Check if form exists
+        orderForm.addEventListener("submit", function (e) {
             e.preventDefault();
             alert("Your order has been placed! We will contact you shortly.");
         });
-
+    }
     </script>
 @endsection

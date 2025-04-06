@@ -24,10 +24,11 @@ class ContactUsController extends Controller
         ];
         try {
             ContactUs::create($request->all());
-            Mail::to('mukeshrlakhatariya1972@gmail.com')->send(new ContactUsMail($data));
+            Mail::to('hiren.business23@gmail.com')->send(new ContactUsMail($data));
             return back()->with('success', 'Message sent successfully! we will contact you soon');
         } catch (\Throwable $th) {
             dd($th->getMessage());
         }
     }
 }
+// mukeshrlakhatariya1972@gmail.com

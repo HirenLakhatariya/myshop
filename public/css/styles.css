@@ -14,6 +14,10 @@ h1, h2 {
 .navbar-brand, .navbar-nav .nav-link {
     color:rgb(255, 255, 255);
 }
+.navbar-brand{
+    font-family: cursive;
+    color: red;
+}
 
 .footer {
     background-color: #34495E;
@@ -84,11 +88,16 @@ h1, h2 {
     margin-bottom: 15px;
     text-align: justify;
 }
-
+.addToCartBtn::after {
+    content: "🛒 Add";
+}
 @media (max-width: 768px) {
     .about-content {
         flex-direction: column;
         align-items: center;
+    }
+    .hide-on-mobile {
+        display: none !important;  
     }
 
     .about-image {
@@ -113,6 +122,9 @@ h1, h2 {
     .carousel-inner{
         height: 300px;
     }
+    /* .addToCartBtn{
+        font-size: 12px;
+    } */
 }
 
 /* Smooth Scroll */
@@ -121,13 +133,56 @@ html {
 }
 
 /* Back to Top Button */
-#backToTop {
+/* #backToTop {
     display: none;
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1000;
+} */
+
+/* Base Styles */
+#backToTop, #whatsappButton {
+    position: fixed;
+    right: 20px;
+    z-index: 99;
+    transition: opacity 0.6s ease, transform 0.6s ease; 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(50px); /* Initially hidden below */
 }
+
+/* WhatsApp Button - Reveal on Load */
+#whatsappButton {
+    bottom: 20px; /* Close to Back to Top button */
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease, transform 0.8s ease;
+}
+
+/* Back to Top Button - Reveal on Scroll */
+#backToTop {
+    bottom: 90px; /* Reduced spacing */
+    visibility: hidden;
+}
+
+/* Bigger Button Size */
+#backToTop, #whatsappButton {
+    width: 50px;   /* Bigger width */
+    height: 50px;  /* Bigger height */
+    font-size: 28px; /* Larger icon */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+/* Hover Effects */
+#backToTop:hover, #whatsappButton:hover {
+    transform: scale(1.15);
+}
+
 .swiper {
     width: 100%;
     height: auto;
@@ -157,6 +212,7 @@ html {
     border-radius: 8px;
     overflow: hidden;
     padding: 10px;
+    margin: 5px;
     background: #fff;
 }
 
@@ -195,3 +251,54 @@ html {
     font-size: 20px; /* Adjust button font size */
     padding: 5px 10px; /* Adjust button padding */
 }
+
+/* Header styling */
+header {
+    /* position: relative;
+    height: 100px;
+    background: #f1f1f1;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; */
+}
+
+/* Navbar fixes */
+.navbar {
+    padding: 20px 15px;  /* Add padding to prevent content overlap */
+}
+
+/* Logo container */
+/* .logo-container {
+    position: absolute;
+    top: 0;      
+    left: 10;    
+    z-index: 999;
+    padding: 0;  
+    margin: 0;   
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+} */
+
+/* Logo image */
+/* .logo-container img {
+    width: auto;          
+    height: 100px;         
+    margin: 0;            
+    padding: 0;           
+    object-fit: contain;  
+} */
+
+/* Sliding animation */
+/* @keyframes slideDown {
+    0% {
+        top: -100px;  
+    }
+    100% {
+        top: 0;        
+    }
+} */
+
+/* .logo-container {
+    animation: slideDown 1.5s forwards; 
+} */

@@ -18,7 +18,7 @@
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
-            <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search for sweets...">
+            <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search Products...">
         </div>
     </div>
 </div>
@@ -29,19 +29,18 @@
         @forelse($product as $product)
             <div class="col product-card" data-name="{{ strtolower($product->name) }} {{ strtolower($product->description) }}">
                 <div class="card h-100">
-                    <img class="card-img-top" src="{{ asset('products/' . $product->img) }}" alt="{{ $product->name }}" style="height: 160px; object-fit: cover;">
+                    <img class="card-img-top" src="{{ asset($product->img) }}" alt="{{ $product->name }}" style="height: 160px; object-fit: cover;">
                     <div class="card-body d-flex flex-column p-2">
                         <h6 class="card-title text-truncate" style="font-size: 13px; margin-bottom: 5px;">{{ $product->name }}</h6>
                         <h6 class="card-subtitle text-muted" style="font-size: 12px;">₹{{ $product->price }} / KG</h6>
                         <p class="card-text text-truncate" style="font-size: 11px; margin-bottom: 5px;">{{ $product->description}}</p>
 
-                        <form method="POST" action="{{ route('add.to.cart') }}" class="mt-auto">
-                            @csrf
+                        <form id="addToCartForm-{{ $product->id }}" class="flex-grow-1">
                             <input type="hidden" name="id" value="{{ $product->id }}">
                             <input type="hidden" name="name" value="{{ $product->name }}">
                             <input type="hidden" name="price" value="{{ $product->price }}">
 
-                            <select name="quantity" class="form-select form-select-sm mb-2">
+                            <select name="quantity" id="quantity-{{ $product->id }}" class="form-select form-select-sm mb-2">
                                 <option value="200">200g</option>
                                 <option value="500">500g</option>
                                 <option value="1000" selected>1 Kg</option>
@@ -49,15 +48,8 @@
                             </select>
 
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-danger btn-sm w-100">Add</button>
-                                <button type="button" class="btn btn-info btn-sm w-50" data-bs-toggle="modal" 
-                                        data-bs-target="#productModal" 
-                                        data-name="{{ $product->name }}" 
-                                        data-description="{{ $product->description }}" 
-                                        data-price="₹{{ $product->price }}" 
-                                        data-quantity="{{ $product->quantity }}">
-                                    ℹ️
-                                </button>
+                                <button type="button" class="btn btn-danger btn-sm w-100 addToCartBtn" data-id="{{ $product->id }}"></button>
+                                <a href="/iteminfo/{{$product->id}}"><button type="button" class="btn btn-info ms-1">Info</button></a>
                             </div>
                         </form>
                     </div>

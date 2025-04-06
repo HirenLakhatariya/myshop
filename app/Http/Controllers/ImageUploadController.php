@@ -21,22 +21,22 @@ class ImageUploadController extends Controller
             'type' => 'required',
         ]);
 
-            $obj = new Product();
-            $obj->name=$req->name;
-            $obj->description=$req->description;
-            $obj->price=$req->price;
-            $obj->type=$req->type;
+        $obj = new Product();
+        $obj->name=$req->name;
+        $obj->description=$req->description;
+        $obj->price=$req->price;
+        $obj->type=$req->type;
 
-            $uploadPath = public_path('products');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath,0755,true);
-            }
-            if ($req->file('img')) {
-                $imgName = time().'.'.$req->img->extension();
-                $req->img->move($uploadPath,$imgName);
-                $obj->img=$imgName;
-            }
-            $obj->save();
-                return redirect()->route('image.form')->with('Good', 'Image upload failed.');
-            }
+        $uploadPath = public_path('products');
+        if (!file_exists($uploadPath)) {
+            mkdir($uploadPath,0755,true);
+        }
+        if ($req->file('img')) {
+            $imgName = time().'.'.$req->img->extension();
+            $req->img->move($uploadPath,$imgName);
+            $obj->img=$imgName;
+        }
+        $obj->save();
+        return redirect()->route('image.form')->with('Good', 'Image upload failed.');
+    }
 }
