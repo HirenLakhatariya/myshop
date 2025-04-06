@@ -3,9 +3,9 @@
 
 @section('main-section')
 <main>
-<div class="container my-3">
+<!-- <div class="container my-3">
     <input type="text" id="searchInput" class="form-control w-50" placeholder="Search for products...">
-</div>
+</div> -->
 <h1 id="products" class="text-center my-4">Products</h1>
 @if(session('success'))
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
@@ -25,7 +25,7 @@
     <div class="carousel-inner">
         @foreach($sweet as $index => $allitem)
             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                <img src="{{ asset('products/' . $allitem->img) }}" class="d-block w-100 carousel-image" alt="{{ $allitem->name }}" loading="lazy">
+                <img src="{{ asset($allitem->img) }}" class="d-block w-100 carousel-image" alt="{{ $allitem->name }}" loading="lazy">
                 <div class="carousel-caption d-md-block">
                     <h5 class="text-white">{{ $allitem->name }}</h5>
                     <p class="text-white">{{ Str::limit($allitem->description, 50) }}</p>
@@ -49,7 +49,7 @@
 </div>
 
 <div class="container my-5">
-    @foreach(['Items' => $items, 'Sweets' => $sweet, 'Namkins' => $farsan] as $title => $allItems)
+    @foreach(['Product' => $items, 'Sweets' => $sweet, 'Namkeens' => $farsan] as $title => $allItems)
     
     <div class="d-flex justify-content-between align-items-center mt-4">
         <h2 class="text-start">{{ $title }}</h2>
@@ -60,14 +60,13 @@
                 @foreach($allItems as $allitem)
                     <div class="swiper-slide">
                         <div class="product-card">
-                            <img src="{{ asset('products/' . $allitem->img) }}" alt="{{ $allitem->name }}">
+                            <img src="{{ asset($allitem->img) }}" alt="{{ $allitem->name }}">
                             <h5 class="text-truncate">{{ $allitem->name }}</h5>
                             <h6 class="text-muted">₹{{ $allitem->price }} / KG</h6>
-                            <p class="text-truncate">{{ $allitem->description }}</p>
+                            <p class="text-truncate hide-on-mobile">{{ $allitem->description }}</p>
                             
                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <form method="POST" action="{{ route('add.to.cart') }}" class="flex-grow-1">
-                                    @csrf
+                                <form id="addToCartForm-{{ $allitem->id }}" class="flex-grow-1">
                                     <input type="hidden" name="id" value="{{ $allitem->id }}">
                                     <input type="hidden" name="name" value="{{ $allitem->name }}">
                                     <input type="hidden" name="price" value="{{ $allitem->price }}">
@@ -80,12 +79,12 @@
                                             <option value="5000">5 Kg</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-danger w-100">Add to Cart</button>
+
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-danger w-100 addToCartBtn" data-id="{{ $allitem->id }}"></button>
+                                        <a href="/iteminfo/{{$allitem->id}}"><button type="button" class="btn btn-info ms-1">Info</button></a>
+                                    </div>
                                 </form>
-                                <button class="btn btn-info ms-1" data-bs-toggle="modal" data-bs-target="#productModal"
-                                    data-name="{{ $allitem->name }}" data-description="{{ $allitem->description }}" data-price="₹{{ $allitem->price }}" data-quantity="₹{{ $allitem->quantity }}">
-                                    Info
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -138,5 +137,12 @@
 </div>
 
 <!-- Back to Top Button -->
-<button id="backToTop" class="btn btn-danger">Back to Top</button>
+<!-- <button
+        type="button"
+        class="btn btn-danger btn-floating btn-lg"
+        id="btn-back-to-top"
+        >
+  <i class="fas fa-arrow-up"></i>
+</button> -->
+
 @endsection

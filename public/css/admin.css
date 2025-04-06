@@ -5,18 +5,124 @@ body {
     margin: 0;
     padding: 0;
 }
-
-.navbar {
-    background: #333;
-    padding: 15px;
-    text-align: center;
+/* product page css */
+.product-table-wrapper .table th,
+.product-table-wrapper .table td {
+    vertical-align: middle;
 }
 
-.navbar a {
-    color: #fff;
-    margin: 0 15px;
+.product-table-wrapper .img-thumbnail {
+    width: 80px;
+    height: auto;
+}
+
+form input.form-control {
+    min-width: 250px;
+}
+
+/* Scope it to your wrapper */
+.product-table-wrapper th a {
+    color: inherit;               /* Inherit text color (white on dark header) */
+    text-decoration: none;       /* Remove underline */
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.product-table-wrapper th {
+    cursor: pointer;
+}
+
+.product-table-wrapper th a:hover {
     text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffc107;              /* Optional: add a golden hover color */
+}
+
+.product-table-wrapper .text-truncate {
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product-table-wrapper .badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.6em;
+}
+
+.product-table-wrapper .action-buttons .btn {
+    margin: 2px;
+}
+
+/* admin manue css */
+.sidebar-wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh; /* Full height */
+    background-color: #1f2937; /* Tailwind: gray-800 */
+    color: white;
+    padding: 20px;
+    overflow-y: auto; /* Allow sidebar scrolling if content overflows */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
     font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 10px;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.nav-links a:hover {
+    background-color: #374151; /* Tailwind: gray-700 */
+}
+
+.logout-form {
+    margin-top: auto;
+    width: 100%;
+}
+
+.logout-form button {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #ef4444; /* Tailwind: red-500 */
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.logout-form button:hover {
+    background-color: #dc2626; /* red-600 */
+}
+
+.main-content {
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 20px;
 }
 
 .content {
@@ -48,7 +154,34 @@ canvas {
     max-width: 100% !important;
     max-height: 100% !important;
 }
+.image-box {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
 
+.additional-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.delete-image {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    cursor: pointer;
+}
 
 /* General Styles */
 /* body {

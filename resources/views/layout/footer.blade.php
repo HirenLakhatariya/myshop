@@ -1,12 +1,21 @@
 @php 
     $cartItems = Session::get('cart', []);
 @endphp
+<a href="https://wa.me/9327407167" target="_blank" id="whatsappButton" class="btn btn-success btn-lg">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- Back to Top Button -->
+<button id="backToTop" type="button" class="btn btn-danger btn-lg">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
 
 <div id="cart-slide" class="cart-slide hide">
     <div class="cart-content">
         <span class="cart-item-name">
             {{ count($cartItems) > 0 ? $cartItems[0]['name'] : 'Cart is Empty' }}
         </span>
+        <br>
         <span class="total-items">Total Items: {{ count($cartItems) }}</span>
         <div class="cart-buttons">
             <a href="{{ route('view.cart') }}"><button class="view-cart">View Cart</button></a>
@@ -22,7 +31,7 @@
             <p>Prajapati Sweet mart, opp Alfha school, vishvakarma chock,<br> ratanpar, Surendranagar, Gujrat 363020</p>
 
             <h3><img src="{{ asset('images/email-icon.png') }}" alt="Email Icon"> General Enquiries</h3>
-            <p>mukeshrlakhatariya@gmail.com</p>
+            <p>mukeshrlakhatariya1972@gmail.com</p>
 
             <h3><img src="{{ asset('images/phone-icon.png') }}" alt="Phone Icon"> Call Us</h3>
             <p>+91 9327407160</p>
@@ -100,6 +109,8 @@
 </script>
 <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+
 
 </body>
 </html>

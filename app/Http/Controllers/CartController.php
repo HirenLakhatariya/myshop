@@ -37,7 +37,13 @@ class CartController extends Controller
 
     //     return redirect()->back()->with('success', 'Product added to cart!');
     // }
-    
+    function codeLog($data, $filename = 'local') {
+        $logPath = storage_path("logs/{$filename}.log");
+        dd($logPath);
+        $logData = "[" . now() . "] " . print_r($data, true) . "\n";
+
+        file_put_contents($logPath, $logData, FILE_APPEND);
+    }
     public function addToCart(Request $request)
     {
         $cart = Session::get('cart', []);
@@ -66,8 +72,15 @@ class CartController extends Controller
         }
 
         Session::put('cart', $cart);
-
-        return redirect()->back()->with('success', 'Product added to cart!');
+        $cartCount = count($cart);
+        $firstItemName = $cart[0]['name'] ?? null;
+        return response()->json([
+            'success' => true,
+            'cartItems' => $cart,
+            'cart_count' => $cartCount,
+            'first_item_name' => $firstItemName,
+            'message' => 'Product added to cart!',
+        ]);
     }
 
     // Helper function to convert quantity to grams
@@ -92,35 +105,48 @@ class CartController extends Controller
 
     public function updateCart(Request $request, $action) {
         $cart = Session::get('cart', []);
-    
         if ($action === 'delete') {
             // Remove item from cart
             $cart = array_filter($cart, function ($item) use ($request) {
                 return $item['id'] != $request->id;
             });
         } else {
-            // Define weight rules
-            $weightMap = [
-                'minus' => [200 => 200, 500 => 200, 1000 => 500],
-                'plus'  => [200 => 500, 500 => 1000]
-            ];
-    
             foreach ($cart as &$item) {
                 if ($item['id'] == $request->id) {
-                    $currentWeight = $item['quantity'];
-    
+                    $current = $item['quantity'];
+        
+                    if ($action === 'plus') {
+                        if ($current === 200) {
+                            $item['quantity'] = 500;
+                        } elseif ($current === 500) {
+                            $item['quantity'] = 1000;
+                        } elseif ($current === 1000) {
+                            $item['quantity'] = 1200;
+                        } else {
+                            // After 1000g, alternate +200g and +300g to match pattern
+                            $lastStep = $current % 500 === 0 ? 200 : 300;
+                            $item['quantity'] = $current + $lastStep;
+                        }
+                    }
+        
                     if ($action === 'minus') {
-                        // Decrease quantity using mapping or reduce by 1kg
-                        $item['quantity'] = $weightMap['minus'][$currentWeight] ?? max(200, $currentWeight - 1000);
-                    } elseif ($action === 'plus') {
-                        // Increase quantity using mapping or increase by 1kg
-                        $item['quantity'] = $weightMap['plus'][$currentWeight] ?? $currentWeight + 1000;
+                        if ($current === 500) {
+                            $item['quantity'] = 200;
+                        } elseif ($current === 1000) {
+                            $item['quantity'] = 500;
+                        } elseif ($current === 1200) {
+                            $item['quantity'] = 1000;
+                        } elseif ($current > 1200) {
+                            // Reverse alternate: subtract 200 if mod 700, else subtract 300
+                            $lastStep = ($current - 200) % 500 === 0 ? 200 : 300;
+                            $item['quantity'] = max(200, $current - $lastStep);
+                        }
                     }
                 }
             }
         }
     
-        Session::put('cart', array_values($cart)); // Reset array keys
+        Session::put('cart', array_values($cart));
         return redirect()->route('view.cart')->with('success', 'Cart updated!');
     }
     

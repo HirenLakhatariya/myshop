@@ -44,7 +44,7 @@
 	                    <label for="image" class="form-label">Upload Image</label>
 	                    <input type="file" class="form-control" id="image" name="img">
 	                    @if($data->img)
-	                        <img src="{{ asset('products/' . $data->img) }}" alt="Current Image" class="img-thumbnail mt-2" style="width: 150px; height: auto;">
+	                        <img src="{{ asset($data->img) }}" alt="Current Image" class="img-thumbnail mt-2" style="width: 150px; height: auto;">
 	                    @endif
 	                </div>
 	                <div class="mb-3">

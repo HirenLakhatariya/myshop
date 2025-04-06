@@ -8,28 +8,17 @@ use Illuminate\Support\Facades\Session;
 
 class MainController extends Controller
 {
-    public function homePage(){
+    public function homePage() {
         $sweet = Product::where('type','S')->get();
         $farsan = Product::where('type','F')->get();
         $items = Product::all();
         return view('welcome')->with('sweet',$sweet)->with('farsan',$farsan)->with('items',$items);
     }
-    public function test(){
-        $sweet = Product::where('type','S')->get();
-        $farsan = Product::where('type','F')->get();
-        $items = Product::all();
-        return view('test')->with('sweet',$sweet)->with('farsan',$farsan)->with('items',$items);
-    }
-    public function showSlider()
-    {
-        $sweet = Product::where('type','S')->get();
-        $farsan = Product::where('type','F')->get();
-        $items = Product::all();
-        return view('testslider')->with('sweet',$sweet)->with('farsan',$farsan)->with('items',$items);
-    }
+    
     public function about(){
         return view('about');
     }
+
     public function contectUs(Request $request){
         $data = $request->validate([
             'name' => 'required',
@@ -39,9 +28,16 @@ class MainController extends Controller
         ]);
         dd($data);
         return redirect()->back()->with('success', 'We will contact you soon!');
-    } 
-    public function iteminfo(){
-        return view('iteminfo');
+    }
+
+    public function iteminfo($id){
+        $items = Product::find($id);
+        $itemsImg = Product::with('images')->findOrFail($id);
+        $products = Product::where('type',"$items->type")
+                            ->where('id', '!=', $items->id)
+                            ->take(5)
+                            ->get();
+        return view('iteminfo',['items' => $items,'itemsImg' => $itemsImg,'products' => $products]);
     }
 
     public function addToCart(Request $request)

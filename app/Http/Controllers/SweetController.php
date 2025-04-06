@@ -10,14 +10,14 @@ class SweetController extends Controller
 
     public function showSweet(){
         $sweet = Product::where('type','S')->get();
-        return view('sweet',['product'=>$sweet]);
+        return view('products',['product'=>$sweet]);
     }
-    public function showFarsan(){
+    public function showNamkeens(){
         $farsan = Product::where('type','F')->get();
-        return view('sweet',['product'=>$farsan]);
+        return view('products',['product'=>$farsan]);
     }
-    public function showAllItems(){
+    public function showAllProducts(){
         $Products = Product::get();
-        return view('sweet',['product'=>$Products]);
+        return view('products',['product'=>$Products]);
     }
 }
